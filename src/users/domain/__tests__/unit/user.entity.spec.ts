@@ -38,4 +38,30 @@ describe('UserEntity unit test', () => {
     expect(sut.props.createdAt).toBeDefined();
     expect(sut.props.createdAt).toBeInstanceOf(Date);
   });
+
+  it('Setter of name field', () => {
+    const name = 'other name';
+    sut['name'] = name;
+    expect(sut.props.name).toBe(name);
+    expect(typeof sut.props.name).toEqual('string');
+  });
+
+  it('Setter of password field', () => {
+    const password = 'other password';
+    sut['password'] = password;
+    expect(sut.props.password).toBe(password);
+    expect(typeof sut.props.password).toEqual('string');
+  });
+
+  it('Should update the name field', () => {
+    const name = 'other name';
+    sut.updateName(name);
+    expect(sut.name).toBe(name);
+  });
+
+  it('Should update the password field', () => {
+    const password = 'other password';
+    sut.updatePassword(password);
+    expect(sut.password).toBe(password);
+  });
 });
