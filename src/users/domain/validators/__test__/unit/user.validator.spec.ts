@@ -2,17 +2,12 @@ import { UserRules, UserValidator, UserValidatorFactory } from '../../user.valid
 import { UserDataBuilder } from '../../../testing/helpers/user-data-builder';
 
 let sut: UserValidator;
+const props = UserDataBuilder({});
 describe('UserValidator unit test', () => {
   beforeEach(() => {
     sut = UserValidatorFactory.create();
   });
 
-  it('valid case for user validator class', () => {
-    const props = UserDataBuilder({});
-    const isValid = sut.validate(props);
-    expect(isValid).toBeTruthy();
-    expect(sut.validatedData).toStrictEqual(new UserRules(props));
-  });
   describe('Name field ', () => {
     it('Invalidation cases for name field', () => {
       let isValid = sut.validate(null);
@@ -24,14 +19,14 @@ describe('UserValidator unit test', () => {
       ]);
 
       isValid = sut.validate({
-        ...UserDataBuilder({}),
+        ...props,
         name: '',
       });
 
       expect(sut.errors['name']).toStrictEqual(['name should not be empty']);
 
       isValid = sut.validate({
-        ...UserDataBuilder({}),
+        ...props,
         name: 10 as any,
       });
 
@@ -41,7 +36,7 @@ describe('UserValidator unit test', () => {
       ]);
 
       isValid = sut.validate({
-        ...UserDataBuilder({}),
+        ...props,
         name: 'a'.repeat(256),
       });
 
@@ -60,14 +55,14 @@ describe('UserValidator unit test', () => {
       ]);
 
       isValid = sut.validate({
-        ...UserDataBuilder({}),
+        ...props,
         email: '',
       });
 
       expect(sut.errors['email']).toStrictEqual(['email should not be empty']);
 
       isValid = sut.validate({
-        ...UserDataBuilder({}),
+        ...props,
         email: 10 as any,
       });
 
@@ -77,7 +72,7 @@ describe('UserValidator unit test', () => {
       ]);
 
       isValid = sut.validate({
-        ...UserDataBuilder({}),
+        ...props,
         email: 'a'.repeat(256),
       });
 
@@ -96,14 +91,14 @@ describe('UserValidator unit test', () => {
       ]);
 
       isValid = sut.validate({
-        ...UserDataBuilder({}),
+        ...props,
         password: '',
       });
 
       expect(sut.errors['password']).toStrictEqual(['password should not be empty']);
 
       isValid = sut.validate({
-        ...UserDataBuilder({}),
+        ...props,
         password: 10 as any,
       });
 
@@ -113,11 +108,32 @@ describe('UserValidator unit test', () => {
       ]);
 
       isValid = sut.validate({
-        ...UserDataBuilder({}),
+        ...props,
         password: 'a'.repeat(256),
       });
 
       expect(sut.errors['password']).toStrictEqual(['password must be shorter than or equal to 100 characters']);
     });
+  });
+
+  describe('CreatedAt field ', () => {
+    it('Invalidation cases for createdAt field', () => {
+      let isValid = sut.validate({ ...props, createdAt: 10 as any });
+      expect(isValid).toBeFalsy();
+      expect(sut.errors['createdAt']).toStrictEqual(['createdAt must be a Date instance']);
+
+      isValid = sut.validate({
+        ...props,
+        createdAt: '2023' as any,
+      });
+
+      expect(sut.errors['createdAt']).toStrictEqual(['createdAt must be a Date instance']);
+    });
+  });
+
+  it('valid case for user validator class', () => {
+    const isValid = sut.validate(props);
+    expect(isValid).toBeTruthy();
+    expect(sut.validatedData).toStrictEqual(new UserRules(props));
   });
 });
