@@ -13,7 +13,6 @@ describe('Entity unit test', () => {
   it('Should set props and id', () => {
     const props = { prop1: 'value1', prop2: 15 };
     const entity = new StubEntity(props);
-    console.log({ entity });
     expect(entity.props).toEqual(props);
     expect(entity.id).not.toBeNull();
     expect(uuidV4Adapter.validate(entity.id)).toBeTruthy();

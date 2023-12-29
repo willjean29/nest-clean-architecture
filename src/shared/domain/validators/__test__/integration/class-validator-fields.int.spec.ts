@@ -31,7 +31,7 @@ describe('ClassValidatorFields integration test', () => {
         'name must be a string',
         'name must be shorter than or equal to 15 characters',
       ],
-      price: ['price must be a string', 'price must be a number conforming to the specified constraints'],
+      price: ['price should not be empty', 'price must be a number conforming to the specified constraints'],
     });
   });
 
@@ -39,6 +39,5 @@ describe('ClassValidatorFields integration test', () => {
     const validator = new SutbClassValidatorFields();
     expect(validator.validate({ name: 'value', price: 10 })).toBeTruthy();
     expect(validator.validatedData).toStrictEqual(new StubRules({ name: 'value', price: 10 }));
-    console.log({ validator: validator.validatedData });
   });
 });
